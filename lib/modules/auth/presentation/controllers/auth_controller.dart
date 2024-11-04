@@ -2,13 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:teste_web/core/utils/db_print.dart';
 import 'package:teste_web/core/utils/repository.dart';
 import 'package:teste_web/modules/auth/domain/entities/usuario_entity.dart';
+import 'package:teste_web/modules/auth/domain/usecases/get_image_background_usecase.dart';
+import 'package:teste_web/modules/auth/domain/usecases/login_usuario_usecase.dart';
 
 class AuthController extends ChangeNotifier {
+  final LoginUsuarioUsecase _loginUsuarioUsecase;
+  final GetImageBackgroundUsecase _getImageBackgroundUsecase;
+
+  AuthController(this._loginUsuarioUsecase, this._getImageBackgroundUsecase);
+
   Usuario? _usuario;
 
   Usuario? get usuario => _usuario;
 
   bool get isAuthenticated => _usuario != null;
+
+  Future<bool> login(String login, String senha) async {
+    try {
+      final usuario = await _loginUsuarioUsecase(login, senha);
+
+      if (usuario != null) {
+        _usuario = usuario;
+        notifyListeners();
+
+        await saveUserData(usuario);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
 
   Future<void> loadUserData() async {
     try {
@@ -34,9 +58,6 @@ class AuthController extends ChangeNotifier {
   }
 
   Future<void> saveUserData(Usuario usuario) async {
-    _usuario = usuario;
-    notifyListeners();
-
     final userJson = usuario.toJson();
 
     await Repository.save('user_data', userJson);
@@ -44,11 +65,15 @@ class AuthController extends ChangeNotifier {
     // await Repository.save('id_user', usuario.id.toString());
   }
 
-  Future<void> clearUserData() async {
+  Future<void> logout() async {
     _usuario = null;
     notifyListeners();
     await Repository.remove('user_data');
     // await Repository.remove('auth_token');
     // await Repository.remove('id_user');
+  }
+
+  Future<String?> getUrlImage() {
+    return _getImageBackgroundUsecase();
   }
 }

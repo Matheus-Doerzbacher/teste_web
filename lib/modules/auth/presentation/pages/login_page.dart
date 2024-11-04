@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:teste_web/modules/auth/presentation/controllers/login_controller.dart';
+import 'package:teste_web/modules/auth/presentation/controllers/auth_controller.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,10 +11,11 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+
   final _loginController = TextEditingController();
   final _senhaController = TextEditingController();
 
-  final controller = Modular.get<LoginController>();
+  final controller = Modular.get<AuthController>();
 
   String? urlImage;
 

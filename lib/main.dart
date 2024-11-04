@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:teste_web/core/app_module.dart';
 import 'package:teste_web/modules/auth/presentation/controllers/auth_controller.dart';
-import 'package:teste_web/modules/auth/presentation/controllers/login_controller.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
@@ -17,9 +16,6 @@ void main() async {
       module: AppModule(),
       child: MultiProvider(
         providers: [
-          ChangeNotifierProvider(
-            create: (context) => Modular.get<LoginController>(),
-          ),
           ChangeNotifierProvider(
             create: (context) => Modular.get<AuthController>(),
           )

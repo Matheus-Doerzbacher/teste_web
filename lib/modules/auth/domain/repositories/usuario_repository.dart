@@ -7,3 +7,7 @@ abstract class LoginUsuarioRepository {
 abstract class BuscarUsuarioByIdRepository {
   Future<Usuario?> call(String id, String token);
 }
+
+abstract class GetImageBackgroundRepository {
+  Future<String> call();
+}

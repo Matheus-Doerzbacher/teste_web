@@ -24,3 +24,15 @@ class BuscarUsuarioByIdRepositoryImp implements BuscarUsuarioByIdRepository {
     return _buscarUsuarioByIdDatasource(id, token);
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+
+class GetImageBackgroundRepositoryImp implements GetImageBackgroundRepository {
+  final GetImageBackgroundDatasource _getImageBackgroundDatasource;
+
+  GetImageBackgroundRepositoryImp(this._getImageBackgroundDatasource);
+  @override
+  Future<String> call() {
+    return _getImageBackgroundDatasource();
+  }
+}

@@ -2,14 +2,15 @@ import 'dart:async';
 
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:teste_web/modules/auth/data/datasources/api/buscar_usuario_by_id_datasource_imp.dart';
+import 'package:teste_web/modules/auth/data/datasources/api/get_image_background_datasource_imp.dart';
 import 'package:teste_web/modules/auth/data/datasources/api/login_usuario_api_datasource_imp.dart';
 import 'package:teste_web/modules/auth/data/datasources/usuario_datasource.dart';
 import 'package:teste_web/modules/auth/data/repositories_imp/usuario_repository_imp.dart';
 import 'package:teste_web/modules/auth/domain/repositories/usuario_repository.dart';
 import 'package:teste_web/modules/auth/domain/usecases/buscar_usuario_by_id_usecase.dart';
+import 'package:teste_web/modules/auth/domain/usecases/get_image_background_usecase.dart';
 import 'package:teste_web/modules/auth/domain/usecases/login_usuario_usecase.dart';
 import 'package:teste_web/modules/auth/presentation/controllers/auth_controller.dart';
-import 'package:teste_web/modules/auth/presentation/controllers/login_controller.dart';
 import 'package:teste_web/modules/auth/presentation/pages/login_page.dart';
 
 class AuthModule extends Module {
@@ -22,6 +23,9 @@ class AuthModule extends Module {
     i.addLazySingleton<BuscarUsuarioByIdDatasource>(
       BuscarUsuarioByIdDatasourceImp.new,
     );
+    i.addLazySingleton<GetImageBackgroundDatasource>(
+      GetImageBackgroundDatasourceImp.new,
+    );
 
     // REPOSITORY
     i.addLazySingleton<LoginUsuarioRepository>(
@@ -29,6 +33,9 @@ class AuthModule extends Module {
     );
     i.addLazySingleton<BuscarUsuarioByIdRepository>(
       () => BuscarUsuarioByIdRepositoryImp(i()),
+    );
+    i.addLazySingleton<GetImageBackgroundRepository>(
+      () => GetImageBackgroundRepositoryImp(i()),
     );
 
     // USECASE
@@ -38,18 +45,18 @@ class AuthModule extends Module {
     i.addLazySingleton<BuscarUsuarioByIdUsecase>(
       () => BuscarUsuarioByIdUsecaseImp(i()),
     );
+    i.addLazySingleton<GetImageBackgroundUsecase>(
+      () => GetImageBackgroundUsecaseImp(i()),
+    );
 
     // CONTROLLERS
     i.addLazySingleton<AuthController>(
-      AuthController.new,
-    );
-
-    i.addLazySingleton<LoginController>(
-      () => LoginController(
+      () => AuthController(
         i(),
         i(),
       ),
     );
+
     super.binds(i);
   }
 

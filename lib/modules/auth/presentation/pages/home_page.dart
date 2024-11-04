@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
               style: FilledButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.error),
               onPressed: () {
-                controller?.clearUserData();
+                controller?.logout();
                 Modular.to.pushReplacementNamed('/');
               },
               child: const Text('Logout'),

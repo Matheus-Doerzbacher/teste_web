@@ -7,3 +7,7 @@ abstract class LoginUsuarioDatasource {
 abstract class BuscarUsuarioByIdDatasource {
   Future<Usuario?> call(String id, String token);
 }
+
+abstract class GetImageBackgroundDatasource {
+  Future<String> call();
+}
