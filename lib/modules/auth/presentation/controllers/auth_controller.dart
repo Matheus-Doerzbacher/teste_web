@@ -2,53 +2,53 @@ import 'package:flutter/material.dart';
 import 'package:teste_web/core/utils/db_print.dart';
 import 'package:teste_web/core/utils/repository.dart';
 import 'package:teste_web/modules/auth/domain/entities/usuario_entity.dart';
-import 'package:teste_web/modules/auth/domain/usecases/buscar_usuario_by_id_usecase.dart';
 
 class AuthController extends ChangeNotifier {
-  final BuscarUsuarioByIdUsecase _buscarUsuarioByIdUsecase;
-
-  AuthController(this._buscarUsuarioByIdUsecase);
-
   UsuarioEntity? _usuario;
 
   UsuarioEntity? get usuario => _usuario;
 
-  // Salva os dados do usuário em JSON criptografado
-  Future<void> saveUserData(UsuarioEntity usuario) async {
-    _usuario = usuario;
-    notifyListeners();
+  bool get isAuthenticated => _usuario != null;
 
-    await Repository.save('auth_token', usuario.token);
-    await Repository.save('id_user', usuario.id.toString());
-  }
-
-  // Carrega os dados do usuário e decodifica o JSON
   Future<void> loadUserData() async {
     try {
-      final token = await Repository.read('auth_token');
-      final idUser = await Repository.read('id_user');
+      // final token = await Repository.read('auth_token');
+      // final idUser = await Repository.read('id_user');
 
-      if (token == null || idUser == null) {
-        _usuario = null;
-      } else {
-        _usuario = await _buscarUsuarioByIdUsecase(idUser, token);
+      // if (token != null && idUser != null) {
+      //   _usuario = await _buscarUsuarioByIdUsecase(idUser, token);
+      // } else {
+      //   _usuario = null;
+      // }
+
+      final userJson = await Repository.read('user_data');
+
+      if (userJson != null) {
+        _usuario = UsuarioEntity.fromJson(userJson);
       }
       notifyListeners();
     } catch (e) {
       dbPrint('Houve um erro ao buscar os dados do usuario');
       dbPrint(e);
     }
-    return;
   }
 
-  // Remove os dados do usuário
+  Future<void> saveUserData(UsuarioEntity usuario) async {
+    _usuario = usuario;
+    notifyListeners();
+
+    final userJson = usuario.toJson();
+
+    await Repository.save('user_data', userJson);
+    // await Repository.save('auth_token', usuario.token);
+    // await Repository.save('id_user', usuario.id.toString());
+  }
+
   Future<void> clearUserData() async {
     _usuario = null;
     notifyListeners();
-    await Repository.remove('auth_token');
-    await Repository.remove('id_user');
+    await Repository.remove('user_data');
+    // await Repository.remove('auth_token');
+    // await Repository.remove('id_user');
   }
-
-  // Método para verificar se o usuário está autenticado
-  bool get isAuthenticated => _usuario != null;
 }

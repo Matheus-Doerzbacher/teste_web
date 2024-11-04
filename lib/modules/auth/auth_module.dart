@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:teste_web/modules/auth/data/datasources/api/buscar_usuario_by_id_datasource_imp.dart';
 import 'package:teste_web/modules/auth/data/datasources/api/login_usuario_api_datasource_imp.dart';
@@ -13,7 +15,7 @@ import 'package:teste_web/modules/auth/presentation/pages/login_page.dart';
 class AuthModule extends Module {
   @override
   void binds(Injector i) {
-    // Datasource
+    // DATASOURCE
     i.addLazySingleton<LoginUsuarioDatasource>(
       LoginUsuarioApiDatasourceImp.new,
     );
@@ -21,7 +23,7 @@ class AuthModule extends Module {
       BuscarUsuarioByIdDatasourceImp.new,
     );
 
-    // Repository
+    // REPOSITORY
     i.addLazySingleton<LoginUsuarioRepository>(
       () => LoginUsuarioRepositoryImp(i()),
     );
@@ -29,7 +31,7 @@ class AuthModule extends Module {
       () => BuscarUsuarioByIdRepositoryImp(i()),
     );
 
-    // Usecase
+    // USECASE
     i.addLazySingleton<LoginUsuarioUsecase>(
       () => LoginUsuarioUsecaseImp(i()),
     );
@@ -37,12 +39,11 @@ class AuthModule extends Module {
       () => BuscarUsuarioByIdUsecaseImp(i()),
     );
 
-    // controllers
+    // CONTROLLERS
     i.addLazySingleton<AuthController>(
-      () => AuthController(
-        i(),
-      ),
+      AuthController.new,
     );
+
     i.addLazySingleton<LoginController>(
       () => LoginController(
         i(),
@@ -54,7 +55,26 @@ class AuthModule extends Module {
 
   @override
   void routes(RouteManager r) {
-    r.child('/', child: (context) => const LoginPage());
+    r.child(
+      Modular.initialRoute,
+      child: (context) => const LoginPage(),
+      guards: [LoginAuthGuard()],
+    );
     super.routes(r);
+  }
+}
+
+class LoginAuthGuard extends RouteGuard {
+  LoginAuthGuard() : super(redirectTo: '/');
+
+  @override
+  Future<bool> canActivate(String path, ModularRoute route) async {
+    final controller = Modular.get<AuthController>();
+
+    if (!controller.isAuthenticated) {
+      await controller.loadUserData();
+    }
+
+    return !controller.isAuthenticated;
   }
 }

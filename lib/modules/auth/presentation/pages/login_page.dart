@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
       if (result) {
         _loginController.clear();
         _senhaController.clear();
-        Modular.to.pushNamed('/home');
+        Modular.to.pushNamed('/');
       }
     }
   }

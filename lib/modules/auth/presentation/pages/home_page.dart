@@ -10,7 +10,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final controller = Modular.get<AuthController>();
+  final controller = Modular.tryGet<AuthController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,11 +26,11 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(controller.usuario?.name ?? 'Não foi encontrado o usuario'),
+            Text(controller?.usuario?.name ?? 'Não foi encontrado o usuario'),
             const SizedBox(height: 24),
             FilledButton(
               onPressed: () {
-                controller.loadUserData();
+                controller?.loadUserData();
               },
               child: const Text('Buscar Usuario'),
             ),
@@ -38,13 +39,13 @@ class _HomePageState extends State<HomePage> {
               style: FilledButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.error),
               onPressed: () {
-                controller.clearUserData();
+                controller?.clearUserData();
                 Modular.to.pushReplacementNamed('/');
               },
               child: const Text('Logout'),
             ),
             const SizedBox(height: 24),
-            Text(controller.isAuthenticated.toString()),
+            Text(controller?.isAuthenticated.toString() ?? ''),
             const SizedBox(height: 24),
             FilledButton(
               style: FilledButton.styleFrom(

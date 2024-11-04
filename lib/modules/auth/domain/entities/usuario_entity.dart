@@ -43,16 +43,18 @@ class UsuarioEntity {
   // Método toJson
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'username': username,
-      'name': name,
-      'email': email,
       'token': token,
-      'id_grupo_usuario': idGrupoUsuario,
-      'id_usuario': idUsuario,
-      'is_superuser': isSuperuser,
-      'password': password,
-      'is_active': isActive,
+      'user': {
+        'id': id,
+        'username': username,
+        'name': name,
+        'email': email,
+        'id_grupo_usuario': idGrupoUsuario,
+        'id_usuario': idUsuario,
+        'is_superuser': isSuperuser,
+        'password': password,
+        'is_active': isActive,
+      }
     };
   }
 
