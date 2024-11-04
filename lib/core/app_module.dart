@@ -4,7 +4,6 @@ import 'package:teste_web/modules/auth/presentation/controllers/auth_controller.
 import 'package:teste_web/modules/auth/presentation/pages/home_page.dart';
 import 'package:teste_web/modules/auth/presentation/pages/teste_admin.dart';
 import 'package:teste_web/modules/auth/presentation/pages/teste_cobranca.dart';
-import 'package:teste_web/modules/auth/presentation/pages/teste_despesas.dart';
 import 'package:teste_web/modules/despesas/despesas_module.dart';
 
 class AppModule extends Module {
