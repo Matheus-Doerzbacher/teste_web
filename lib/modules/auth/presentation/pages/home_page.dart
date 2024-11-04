@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:teste_web/core/widgets/drawer/drawer_navigation.dart';
 import 'package:teste_web/modules/auth/presentation/controllers/auth_controller.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,26 +15,40 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              tooltip: 'Abrir navegação',
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+        iconTheme: IconThemeData(color: colorScheme.primary),
+        title: Text(
+          'Página Principal',
+          style: TextStyle(color: colorScheme.onSurface.withOpacity(0.7)),
+        ),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(1),
+          child: Divider(),
+        ),
       ),
-      drawer: const Drawer(),
+      drawer: const DrawerNavigation(),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(controller?.usuario?.name ?? 'Não foi encontrado o usuario'),
             const SizedBox(height: 24),
-            FilledButton(
-              onPressed: () {
-                controller?.loadUserData();
-              },
-              child: const Text('Buscar Usuario'),
-            ),
+            Text('Esta autenticado: ${controller?.isAuthenticated.toString()}'),
             const SizedBox(height: 24),
             FilledButton(
               style: FilledButton.styleFrom(
@@ -43,15 +58,6 @@ class _HomePageState extends State<HomePage> {
                 Modular.to.pushReplacementNamed('/');
               },
               child: const Text('Logout'),
-            ),
-            const SizedBox(height: 24),
-            Text(controller?.isAuthenticated.toString() ?? ''),
-            const SizedBox(height: 24),
-            FilledButton(
-              style: FilledButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.tertiary),
-              onPressed: () {},
-              child: const Text('Graficos'),
             ),
           ],
         ),
