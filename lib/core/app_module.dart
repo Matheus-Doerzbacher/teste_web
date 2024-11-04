@@ -5,17 +5,24 @@ import 'package:teste_web/modules/auth/presentation/pages/home_page.dart';
 import 'package:teste_web/modules/auth/presentation/pages/teste_admin.dart';
 import 'package:teste_web/modules/auth/presentation/pages/teste_cobranca.dart';
 import 'package:teste_web/modules/auth/presentation/pages/teste_despesas.dart';
+import 'package:teste_web/modules/despesas/despesas_module.dart';
 
 class AppModule extends Module {
   @override
   void binds(Injector i) {
     AuthModule().binds(i);
+    DespesasModule().binds(i);
     super.binds(i);
   }
 
   @override
   void routes(r) {
-    r.module('/login/', module: AuthModule());
+    r.module('/login', module: AuthModule());
+    r.module(
+      '/despesas',
+      module: DespesasModule(),
+      guards: [AuthGuard()],
+    );
     r.child(
       '/',
       child: (context) => const HomePage(),
@@ -25,12 +32,6 @@ class AppModule extends Module {
     r.child(
       '/administrador/permissoes',
       child: (context) => const TesteAdmin(),
-      guards: [AuthGuard()],
-      transition: TransitionType.leftToRightWithFade,
-    );
-    r.child(
-      '/despesas/centro-custo',
-      child: (context) => const TesteDespesas(),
       guards: [AuthGuard()],
       transition: TransitionType.leftToRightWithFade,
     );

@@ -8,7 +8,7 @@ class LoginUsuarioRepositoryImp implements LoginUsuarioRepository {
   LoginUsuarioRepositoryImp(this._loginUsuarioDatasource);
 
   @override
-  Future<UsuarioEntity?> call(String login, String senha) {
+  Future<Usuario?> call(String login, String senha) {
     return _loginUsuarioDatasource(login, senha);
   }
 }
@@ -20,7 +20,7 @@ class BuscarUsuarioByIdRepositoryImp implements BuscarUsuarioByIdRepository {
 
   BuscarUsuarioByIdRepositoryImp(this._buscarUsuarioByIdDatasource);
   @override
-  Future<UsuarioEntity?> call(String id, String token) {
+  Future<Usuario?> call(String id, String token) {
     return _buscarUsuarioByIdDatasource(id, token);
   }
 }

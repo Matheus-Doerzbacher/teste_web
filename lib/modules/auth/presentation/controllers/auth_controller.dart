@@ -4,9 +4,9 @@ import 'package:teste_web/core/utils/repository.dart';
 import 'package:teste_web/modules/auth/domain/entities/usuario_entity.dart';
 
 class AuthController extends ChangeNotifier {
-  UsuarioEntity? _usuario;
+  Usuario? _usuario;
 
-  UsuarioEntity? get usuario => _usuario;
+  Usuario? get usuario => _usuario;
 
   bool get isAuthenticated => _usuario != null;
 
@@ -24,7 +24,7 @@ class AuthController extends ChangeNotifier {
       final userJson = await Repository.read('user_data');
 
       if (userJson != null) {
-        _usuario = UsuarioEntity.fromJson(userJson);
+        _usuario = Usuario.fromJson(userJson);
       }
       notifyListeners();
     } catch (e) {
@@ -33,7 +33,7 @@ class AuthController extends ChangeNotifier {
     }
   }
 
-  Future<void> saveUserData(UsuarioEntity usuario) async {
+  Future<void> saveUserData(Usuario usuario) async {
     _usuario = usuario;
     notifyListeners();
 

@@ -7,7 +7,7 @@ import 'package:teste_web/modules/auth/domain/entities/usuario_entity.dart';
 
 class BuscarUsuarioByIdDatasourceImp implements BuscarUsuarioByIdDatasource {
   @override
-  Future<UsuarioEntity?> call(String id, String token) async {
+  Future<Usuario?> call(String id, String token) async {
     try {
       final url = Uri.parse('${Config.apiUrl}usuarios/$id/');
       final response = await http.get(url, headers: {
@@ -18,8 +18,7 @@ class BuscarUsuarioByIdDatasourceImp implements BuscarUsuarioByIdDatasource {
 
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
-        UsuarioEntity usuario =
-            UsuarioEntity.fromJson({'token': token, 'user': json});
+        Usuario usuario = Usuario.fromJson({'token': token, 'user': json});
         return usuario.copyWith(token: token);
       } else {
         dbPrint('Erro na requisição buscar usuário: ${response.statusCode}');

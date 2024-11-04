@@ -1,4 +1,4 @@
-class UsuarioEntity {
+class Usuario {
   final int id;
   final String username;
   final String name;
@@ -10,7 +10,7 @@ class UsuarioEntity {
   final String password;
   final bool isActive;
 
-  UsuarioEntity({
+  Usuario({
     required this.id,
     required this.username,
     required this.name,
@@ -24,9 +24,9 @@ class UsuarioEntity {
   });
 
   // Método fromJson
-  factory UsuarioEntity.fromJson(Map<String, dynamic> json) {
+  factory Usuario.fromJson(Map<String, dynamic> json) {
     final user = json['user'];
-    return UsuarioEntity(
+    return Usuario(
       id: user['id'] as int,
       username: user['username'] as String,
       name: user['name'] as String,
@@ -59,7 +59,7 @@ class UsuarioEntity {
   }
 
   // Método copyWith
-  UsuarioEntity copyWith({
+  Usuario copyWith({
     int? id,
     String? username,
     String? name,
@@ -71,7 +71,7 @@ class UsuarioEntity {
     String? password,
     bool? isActive,
   }) {
-    return UsuarioEntity(
+    return Usuario(
       id: id ?? this.id,
       username: username ?? this.username,
       name: name ?? this.name,

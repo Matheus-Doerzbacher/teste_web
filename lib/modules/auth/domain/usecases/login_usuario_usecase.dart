@@ -2,7 +2,7 @@ import 'package:teste_web/modules/auth/domain/entities/usuario_entity.dart';
 import 'package:teste_web/modules/auth/domain/repositories/usuario_repository.dart';
 
 abstract class LoginUsuarioUsecase {
-  Future<UsuarioEntity?> call(String login, String senha);
+  Future<Usuario?> call(String login, String senha);
 }
 
 class LoginUsuarioUsecaseImp implements LoginUsuarioUsecase {
@@ -11,7 +11,7 @@ class LoginUsuarioUsecaseImp implements LoginUsuarioUsecase {
   LoginUsuarioUsecaseImp(this._loginUsuarioRepository);
 
   @override
-  Future<UsuarioEntity?> call(String login, String senha) {
+  Future<Usuario?> call(String login, String senha) {
     return _loginUsuarioRepository(login, senha);
   }
 }

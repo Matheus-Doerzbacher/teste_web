@@ -8,7 +8,7 @@ import 'package:teste_web/modules/auth/domain/entities/usuario_entity.dart';
 
 class LoginUsuarioApiDatasourceImp implements LoginUsuarioDatasource {
   @override
-  Future<UsuarioEntity?> call(String login, String senha) async {
+  Future<Usuario?> call(String login, String senha) async {
     try {
       final url = Uri.parse('${Config.apiUrl}login/');
       final response = await http.post(
@@ -24,7 +24,7 @@ class LoginUsuarioApiDatasourceImp implements LoginUsuarioDatasource {
 
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
-        final usuario = UsuarioEntity.fromJson(json);
+        final usuario = Usuario.fromJson(json);
         return usuario;
       } else {
         dbPrint('Erro ao buscar usuario');
