@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                   backgroundColor: Theme.of(context).colorScheme.error),
               onPressed: () {
                 controller.clearUserData();
-                Navigator.of(context).pushReplacementNamed('/login');
+                Modular.to.pushReplacementNamed('/');
               },
               child: const Text('Logout'),
             ),

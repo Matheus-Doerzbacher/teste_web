@@ -10,25 +10,24 @@ import 'package:url_strategy/url_strategy.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // final authController = Modular.get<AuthController>();
-  // await authController.loadUserData();
-
   setPathUrlStrategy();
 
-  runApp(ModularApp(
-    module: AppModule(),
-    child: MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => Modular.get<LoginController>(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => Modular.get<AuthController>(),
-        )
-      ],
-      child: const AppWidget(),
+  runApp(
+    ModularApp(
+      module: AppModule(),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => Modular.get<LoginController>(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => Modular.get<AuthController>(),
+          )
+        ],
+        child: const AppWidget(),
+      ),
     ),
-  ));
+  );
 }
 
 class AppWidget extends StatelessWidget {
