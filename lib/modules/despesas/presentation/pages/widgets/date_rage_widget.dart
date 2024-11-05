@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DateRageWidget extends StatefulWidget {
   final DateTimeRange? dataVencimento;
@@ -22,6 +23,13 @@ class _DateRageWidgetState extends State<DateRageWidget> {
   DateTimeRange? selectedVencimento;
   DateTimeRange? selectedRecebimento;
 
+  @override
+  void initState() {
+    super.initState();
+    selectedVencimento = widget.dataVencimento;
+    selectedRecebimento = widget.dataRecebimento;
+  }
+
   Future<void> _selectDateRange(BuildContext context, bool isVencimento) async {
     final DateTimeRange? picked = await showDateRangePicker(
       locale: const Locale('pt', 'BR'),
@@ -44,20 +52,43 @@ class _DateRageWidgetState extends State<DateRageWidget> {
     }
   }
 
-  String _formatDate(DateTime date) {
+  String _formatDateLarge(DateTime date) {
+    return '${date.day} de ${DateFormat('MMM', 'pt_BR').format(date)} de ${date.year}';
+  }
+
+  String _formatDateSmall(DateTime date) {
     return '${date.day}/${date.month}/${date.year}';
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < 800) {
+          // Layout para telas menores que 800
+          return _layoutMenor(context);
+        } else {
+          // Layout para telas maiores ou iguais a 800
+          return _layoutMaior(context);
+        }
+      },
+    );
+  }
+
+  Widget _layoutMenor(BuildContext context) {
+    return Column(
       children: [
         // Vencimento Column
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Vencimento"),
+            Text(
+              "Vencimento",
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
+            ),
             Row(
               children: [
                 const Text("Período: "),
@@ -65,21 +96,35 @@ class _DateRageWidgetState extends State<DateRageWidget> {
                   onPressed: () => _selectDateRange(context, true),
                   child: Text(
                     selectedVencimento != null
-                        ? "${_formatDate(selectedVencimento!.start)} - ${_formatDate(selectedVencimento!.end.toLocal())}"
+                        ? "${_formatDateSmall(selectedVencimento!.start)} à ${_formatDateSmall(selectedVencimento!.end)}"
                         : "Selecionar datas",
                     style: const TextStyle(color: Colors.black),
                   ),
                 ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedVencimento = null;
+                    });
+                  },
+                  icon: const Icon(Icons.clear_rounded),
+                )
               ],
             ),
           ],
         ),
-
+        const SizedBox(height: 16),
         // Pagamento Column
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Pagamento"),
+            Text(
+              "Pagamento",
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
+            ),
             Row(
               children: [
                 const Text("Período: "),
@@ -87,14 +132,104 @@ class _DateRageWidgetState extends State<DateRageWidget> {
                   onPressed: () => _selectDateRange(context, false),
                   child: Text(
                     selectedRecebimento != null
-                        ? "${_formatDate(selectedRecebimento!.start)} - ${_formatDate(selectedRecebimento!.end)}"
+                        ? "${_formatDateSmall(selectedRecebimento!.start)} à ${_formatDateSmall(selectedRecebimento!.end)}"
                         : "Selecionar datas",
                     style: const TextStyle(color: Colors.black),
                   ),
                 ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedRecebimento = null;
+                    });
+                  },
+                  icon: const Icon(Icons.clear_rounded),
+                )
               ],
             ),
           ],
+        ),
+      ],
+    );
+  }
+
+  Widget _layoutMaior(BuildContext context) {
+    return Row(
+      children: [
+        // Vencimento Column
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Vencimento",
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              Row(
+                children: [
+                  const Text("Período: "),
+                  TextButton(
+                    onPressed: () => _selectDateRange(context, true),
+                    child: Text(
+                      selectedVencimento != null
+                          ? "${_formatDateLarge(selectedVencimento!.start)} à ${_formatDateLarge(selectedVencimento!.end)}"
+                          : "Selecionar datas",
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        selectedVencimento = null;
+                      });
+                    },
+                    icon: const Icon(Icons.clear_rounded),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+
+        // Pagamento Column
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Pagamento",
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              Row(
+                children: [
+                  const Text("Período: "),
+                  TextButton(
+                    onPressed: () => _selectDateRange(context, false),
+                    child: Text(
+                      selectedRecebimento != null
+                          ? "${_formatDateLarge(selectedRecebimento!.start)} à ${_formatDateLarge(selectedRecebimento!.end)}"
+                          : "Selecionar datas",
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        selectedRecebimento = null;
+                      });
+                    },
+                    icon: const Icon(Icons.clear_rounded),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ],
     );
