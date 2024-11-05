@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:teste_web/core/app_module.dart';
+import 'package:teste_web/core/theme/theme_data_custom.dart';
 import 'package:teste_web/modules/auth/presentation/controllers/auth_controller.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,18 +34,21 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // final authController = GetIt.I<AuthController>();
     return MaterialApp.router(
+      localizationsDelegates: const <LocalizationsDelegate<Object>>[
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('pt', 'BR'),
+        Locale('en', 'US'),
+      ],
       debugShowCheckedModeBanner: false,
       title: 'Intranet Uniguaçu',
-      theme: ThemeData(
-        textTheme: GoogleFonts.poppinsTextTheme(),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF004a97),
-        ).copyWith(
-          primary: const Color(0xFF004a97),
-        ),
-        useMaterial3: true,
-      ),
+      theme: ThemeDataCustom().light(),
+      darkTheme: ThemeDataCustom().dark(),
       routerConfig: Modular.routerConfig,
+      themeMode: ThemeMode.light,
     );
   }
 }
