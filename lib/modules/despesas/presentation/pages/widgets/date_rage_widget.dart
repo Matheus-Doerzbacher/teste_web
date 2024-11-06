@@ -105,6 +105,7 @@ class _DateRageWidgetState extends State<DateRageWidget> {
                   onPressed: () {
                     setState(() {
                       selectedVencimento = null;
+                      widget.onVencimentoChanged(null);
                     });
                   },
                   icon: const Icon(Icons.clear_rounded),
@@ -141,6 +142,7 @@ class _DateRageWidgetState extends State<DateRageWidget> {
                   onPressed: () {
                     setState(() {
                       selectedRecebimento = null;
+                      widget.onRecebimentoChanged(null);
                     });
                   },
                   icon: const Icon(Icons.clear_rounded),
@@ -184,6 +186,7 @@ class _DateRageWidgetState extends State<DateRageWidget> {
                     onPressed: () {
                       setState(() {
                         selectedVencimento = null;
+                        widget.onVencimentoChanged(null);
                       });
                     },
                     icon: const Icon(Icons.clear_rounded),
@@ -222,6 +225,7 @@ class _DateRageWidgetState extends State<DateRageWidget> {
                     onPressed: () {
                       setState(() {
                         selectedRecebimento = null;
+                        widget.onRecebimentoChanged(null);
                       });
                     },
                     icon: const Icon(Icons.clear_rounded),

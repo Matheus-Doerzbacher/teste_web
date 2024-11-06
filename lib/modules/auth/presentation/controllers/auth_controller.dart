@@ -11,9 +11,9 @@ class AuthController extends ChangeNotifier {
 
   AuthController(this._loginUsuarioUsecase, this._getImageBackgroundUsecase);
 
-  Usuario? _usuario;
+  static Usuario? _usuario;
 
-  Usuario? get usuario => _usuario;
+  static Usuario? get usuario => _usuario;
 
   bool get isAuthenticated => _usuario != null;
 

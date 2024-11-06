@@ -46,7 +46,8 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(controller?.usuario?.name ?? 'Não foi encontrado o usuario'),
+            Text(
+                AuthController.usuario?.name ?? 'Não foi encontrado o usuario'),
             const SizedBox(height: 24),
             Text('Esta autenticado: ${controller?.isAuthenticated.toString()}'),
             const SizedBox(height: 24),

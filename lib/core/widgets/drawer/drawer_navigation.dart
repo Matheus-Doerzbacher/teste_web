@@ -12,7 +12,7 @@ class DrawerNavigation extends StatefulWidget {
 }
 
 class _DrawerNavigationState extends State<DrawerNavigation> {
-  final usuario = Modular.get<AuthController>().usuario;
+  final usuario = AuthController.usuario;
 
   @override
   Widget build(BuildContext context) {

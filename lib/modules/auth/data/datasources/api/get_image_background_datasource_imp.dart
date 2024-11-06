@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:http/http.dart' as http;
+import 'package:teste_web/core/config.dart';
 
 import 'package:teste_web/modules/auth/data/datasources/usuario_datasource.dart';
 
@@ -12,9 +13,10 @@ class GetImageBackgroundDatasourceImp implements GetImageBackgroundDatasource {
     final randomPage = Random().nextInt(5);
 
     final url = Uri.parse(
-        'https://api.pexels.com/v1/search?query=nature&size=small&per_page=$photoPerPage&page=$randomPage');
+      'https://api.pexels.com/v1/search?query=nature&size=small&per_page=$photoPerPage&page=$randomPage',
+    );
 
-    const token = 'L7VuojxY7hzgBwW61S2cZYoy9WLMUYDMQ7XNSpvF0lnoLfdRFjmNDIsJ';
+    const token = Config.tokenApiImage;
 
     try {
       final response = await http.get(url, headers: {'Authorization': token});

@@ -9,14 +9,27 @@ class TransacoesCentroDeCustoController extends ChangeNotifier {
   TransacoesCentroDeCustoController(this._getTransacoesCentroDeCustoUsecase);
 
   List<TransacoesCentroDeCusto> _transacoes = [];
+  bool isLoading = false;
 
   List<TransacoesCentroDeCusto> get transacoes => _transacoes;
 
-  void getTransacoes(FilterTransacoesCentroDeCusto filtros) async {
-    final result = await _getTransacoesCentroDeCustoUsecase(filtros);
+  Future<List<TransacoesCentroDeCusto>> getTransacoes(
+      FilterTransacoesCentroDeCusto filtros) async {
+    try {
+      isLoading = true;
+      notifyListeners();
 
-    if (result != null) {
-      _transacoes = result;
+      final result = await _getTransacoesCentroDeCustoUsecase(filtros);
+
+      if (result != null) {
+        _transacoes = result;
+        notifyListeners();
+        return result;
+      }
+
+      return [];
+    } finally {
+      isLoading = false;
       notifyListeners();
     }
   }

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:teste_web/core/app_module.dart';
 import 'package:teste_web/core/theme/theme_data_custom.dart';
 import 'package:teste_web/modules/auth/presentation/controllers/auth_controller.dart';
+import 'package:teste_web/modules/despesas/presentation/controllers/transacoes_centro_de_custo_controller.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -19,6 +20,10 @@ void main() async {
         providers: [
           ChangeNotifierProvider(
             create: (context) => Modular.get<AuthController>(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) =>
+                Modular.get<TransacoesCentroDeCustoController>(),
           )
         ],
         child: const AppWidget(),

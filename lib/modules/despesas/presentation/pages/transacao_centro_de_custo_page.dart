@@ -1,8 +1,15 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:teste_web/core/widgets/drawer/drawer_navigation.dart';
+import 'package:teste_web/modules/despesas/domain/entities/filter_transacoes_centro_de_custo.dart';
 import 'package:teste_web/modules/despesas/presentation/controllers/transacoes_centro_de_custo_controller.dart';
 import 'package:teste_web/modules/despesas/presentation/pages/widgets/date_rage_widget.dart';
+import 'package:teste_web/modules/despesas/presentation/pages/widgets/table/transacoes_data_columns.dart';
+import 'package:teste_web/modules/despesas/presentation/pages/widgets/table/transacoes_data_source.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 
 class TransacaoCentroDeCustoPage extends StatefulWidget {
   const TransacaoCentroDeCustoPage({super.key});
@@ -26,12 +33,26 @@ class _TransacaoCentroDeCustoPageState
 
   final controller = Modular.get<TransacoesCentroDeCustoController>();
 
+  late TransacoesDataSource transacoesDataSource;
+
   @override
   void initState() {
     _dataRecibimentoRange = DateTimeRange(
       start: DateTime(DateTime.now().year, DateTime.now().month, 1),
       end: DateTime(DateTime.now().year, DateTime.now().month + 1, 0),
     );
+
+    final filtros =
+        FilterTransacoesCentroDeCusto(dataRecebimento: _dataRecibimentoRange);
+
+    controller.getTransacoes(filtros).then((listTransacoes) {
+      if (mounted) {
+        transacoesDataSource =
+            TransacoesDataSource(transacoes: listTransacoes, context: context);
+        setState(() {});
+      }
+    });
+
     super.initState();
   }
 
@@ -45,9 +66,29 @@ class _TransacaoCentroDeCustoPageState
     super.dispose();
   }
 
+  void _buscarTransacoes() async {
+    final filters = FilterTransacoesCentroDeCusto(
+      fornecedor: _fornecedorController.text,
+      itemDescricao: _descricaoController.text,
+      planoConta: _planoContraController.text,
+      nomeOrg: _nomeOrgController.text,
+      dataRecebimento: _dataRecibimentoRange,
+      dataVencimento: _dataVencimentoRange,
+    );
+
+    controller.getTransacoes(filters).then((listTransacoes) {
+      if (mounted) {
+        transacoesDataSource =
+            TransacoesDataSource(transacoes: listTransacoes, context: context);
+        setState(() {});
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       floatingActionButton: screenWidth < 800
           ? FloatingActionButton(
@@ -76,7 +117,7 @@ class _TransacaoCentroDeCustoPageState
                     ),
                     const SizedBox(width: 16),
                     FilledButton.icon(
-                      onPressed: () {},
+                      onPressed: _buscarTransacoes,
                       icon: const Icon(Icons.search),
                       label: const Text('Buscar'),
                     ),
@@ -96,42 +137,56 @@ class _TransacaoCentroDeCustoPageState
         ),
       ),
       drawer: const DrawerNavigation(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _filtrosTextoDePesquisa(context),
-              const SizedBox(height: 24),
-              _filtroDatasPesquisa(context),
-              controller.transacoes.isNotEmpty
-                  ? Expanded(
-                      child: ListView.builder(
-                      itemCount: controller.transacoes.length,
-                      itemBuilder: (context, index) {
-                        final transacao = controller.transacoes[index];
-                        return ListTile(
-                          title: Text(transacao.fornecedor),
-                          subtitle: Column(
-                              children: transacao.centroDeCusto
-                                  .map(
-                                      (centro) => Text(centro.nomeCentroCustos))
-                                  .toList()),
-                        );
-                      },
-                    ))
-                  : const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 64),
-                        Text(
-                          'Nenhuma transacão encontrada',
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _filtrosTextoDePesquisa(context),
+            const SizedBox(height: 24),
+            _filtroDatasPesquisa(context),
+            Container(
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withOpacity(0.15), // Cor da linha
+              height: 1.5, // Espessura da linha
+            ),
+            controller.isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : controller.transacoes.isNotEmpty
+                    ? Expanded(
+                        child: SfDataGridTheme(
+                          data: SfDataGridThemeData(
+                            headerHoverColor: Colors.white.withOpacity(0.3),
+                            headerColor: Theme.of(context).colorScheme.primary,
+                            sortIconColor: Colors.white,
+                          ),
+                          child: SfDataGrid(
+                            source: transacoesDataSource,
+                            columns: transacoesColumns(),
+                            // allowSorting: true,
+                            // gridLinesVisibility: GridLinesVisibility.both,
+                            // headerGridLinesVisibility: GridLinesVisibility.both,
+                            // columnWidthMode: ColumnWidthMode.fitByColumnName,
+                            // columnWidthCalculationRange:
+                            //     ColumnWidthCalculationRange.allRows,
+                            tableSummaryRows: loadTableSummaryRows(),
+                          ),
                         ),
-                      ],
-                    ),
-            ],
-          ),
+                      )
+                    : const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 64),
+                          Text(
+                            'Nenhuma transacão encontrada',
+                          ),
+                        ],
+                      ),
+          ],
         ),
       ),
     );
