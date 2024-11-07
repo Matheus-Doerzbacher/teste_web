@@ -1,8 +1,0 @@
-import 'package:teste_web/modules/despesas/domain/entities/filter_transacoes_centro_de_custo.dart';
-import 'package:teste_web/modules/despesas/domain/entities/transacoes_centro_de_custo.dart';
-
-abstract class GetTransacoesCentroDeCustoDatasource {
-  Future<List<TransacoesCentroDeCusto>?> call(
-    FilterTransacoesCentroDeCusto filtros,
-  );
-}

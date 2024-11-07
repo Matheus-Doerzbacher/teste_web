@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:teste_web/core/widgets/drawer/drawer_expansion_panel_list.dart';
 import 'package:teste_web/core/widgets/drawer/drawer_item_navigation.dart';
-import 'package:teste_web/modules/auth/presentation/controllers/auth_controller.dart';
+import 'package:teste_web/src/modules/auth/presentation/controllers/auth_controller.dart';
 
 class DrawerNavigation extends StatefulWidget {
   const DrawerNavigation({super.key});
