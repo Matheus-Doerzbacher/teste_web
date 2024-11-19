@@ -16,18 +16,16 @@ class TransacoesCentroDeCustoController extends ChangeNotifier {
 
   Future<List<TransacoesCentroDeCusto>> getTransacoes(
       FilterTransacoesCentroDeCusto filtros) async {
+    isLoading = true;
+    notifyListeners();
+
     try {
-      isLoading = true;
-      notifyListeners();
-
       final result = await _getTransacoesCentroDeCustoRepository(filtros);
-
       if (result != null) {
         _transacoes = result;
         notifyListeners();
         return result;
       }
-
       return [];
     } finally {
       isLoading = false;
