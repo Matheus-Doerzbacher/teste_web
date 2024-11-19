@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:teste_web/src/modules/despesas/domain/entities/filter_transacoes_centro_de_custo.dart';
-import 'package:teste_web/src/modules/despesas/domain/entities/transacoes_centro_de_custo.dart';
-import 'package:teste_web/src/modules/despesas/domain/usecases/get_transacoes_centro_de_custo_usecase.dart';
+import 'package:teste_web/src/modules/despesas/_models/filter_transacoes_centro_de_custo.dart';
+import 'package:teste_web/src/modules/despesas/_models/transacoes_centro_de_custo.dart';
+import 'package:teste_web/src/modules/despesas/repositories/get_trancacoes_centro_de_custo_repository.dart';
 
 class TransacoesCentroDeCustoController extends ChangeNotifier {
-  final GetTransacoesCentroDeCustoUsecase _getTransacoesCentroDeCustoUsecase;
+  final GetTrancacoesCentroDeCustoRepository
+      _getTransacoesCentroDeCustoRepository;
 
-  TransacoesCentroDeCustoController(this._getTransacoesCentroDeCustoUsecase);
+  TransacoesCentroDeCustoController(this._getTransacoesCentroDeCustoRepository);
 
   List<TransacoesCentroDeCusto> _transacoes = [];
   bool isLoading = false;
@@ -19,7 +20,7 @@ class TransacoesCentroDeCustoController extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
-      final result = await _getTransacoesCentroDeCustoUsecase(filtros);
+      final result = await _getTransacoesCentroDeCustoRepository(filtros);
 
       if (result != null) {
         _transacoes = result;

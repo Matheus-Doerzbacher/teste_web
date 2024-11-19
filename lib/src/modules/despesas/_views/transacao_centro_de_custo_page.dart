@@ -2,13 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:teste_web/core/widgets/drawer/drawer_navigation.dart';
-import 'package:teste_web/src/modules/despesas/domain/entities/filter_transacoes_centro_de_custo.dart';
-import 'package:teste_web/src/modules/despesas/presentation/controllers/transacoes_centro_de_custo_controller.dart';
-import 'package:teste_web/src/modules/despesas/presentation/pages/widgets/date_rage_widget.dart';
-import 'package:teste_web/src/modules/despesas/presentation/pages/widgets/table/transacoes_data_columns.dart';
-import 'package:teste_web/src/modules/despesas/presentation/pages/widgets/table/transacoes_data_source.dart';
+import 'package:teste_web/src/modules/despesas/controllers/transacoes_centro_de_custo_controller.dart';
+import 'package:teste_web/src/modules/despesas/_models/filter_transacoes_centro_de_custo.dart';
+import 'package:teste_web/src/modules/despesas/_views/widgets/date_rage_widget.dart';
+import 'package:teste_web/src/modules/despesas/_views/widgets/table/transacoes_data_columns.dart';
+import 'package:teste_web/src/modules/despesas/_views/widgets/table/transacoes_data_source.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
 class TransacaoCentroDeCustoPage extends StatefulWidget {
@@ -49,7 +50,6 @@ class _TransacaoCentroDeCustoPageState
       if (mounted) {
         transacoesDataSource =
             TransacoesDataSource(transacoes: listTransacoes, context: context);
-        setState(() {});
       }
     });
 
@@ -80,13 +80,13 @@ class _TransacaoCentroDeCustoPageState
       if (mounted) {
         transacoesDataSource =
             TransacoesDataSource(transacoes: listTransacoes, context: context);
-        setState(() {});
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final controller = Provider.of<TransacoesCentroDeCustoController>(context);
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -153,8 +153,10 @@ class _TransacaoCentroDeCustoPageState
               height: 1.5, // Espessura da linha
             ),
             controller.isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
+                ? const Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   )
                 : controller.transacoes.isNotEmpty
                     ? Expanded(
@@ -255,6 +257,7 @@ class _TransacaoCentroDeCustoPageState
           _dataRecibimentoRange = range;
         });
       },
+      onSave: _buscarTransacoes,
     );
   }
 

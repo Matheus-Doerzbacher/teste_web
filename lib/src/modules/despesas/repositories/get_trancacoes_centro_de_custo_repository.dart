@@ -4,14 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:teste_web/core/config.dart';
 import 'package:teste_web/core/utils/db_print.dart';
 import 'package:teste_web/src/modules/auth/presentation/controllers/auth_controller.dart';
-import 'package:teste_web/src/modules/despesas/data/datasources/transacoes_centro_de_custo/transacoes_centro_de_custo_datasource.dart';
-import 'package:teste_web/src/modules/despesas/domain/entities/filter_transacoes_centro_de_custo.dart';
-import 'package:teste_web/src/modules/despesas/domain/entities/transacoes_centro_de_custo.dart';
+import 'package:teste_web/src/modules/despesas/_models/filter_transacoes_centro_de_custo.dart';
+import 'package:teste_web/src/modules/despesas/_models/transacoes_centro_de_custo.dart';
 import 'package:http/http.dart' as http;
 
-class GetTransacoesCentroDeCustoDatasourceImp
-    implements GetTransacoesCentroDeCustoDatasource {
-  @override
+class GetTrancacoesCentroDeCustoRepository {
   Future<List<TransacoesCentroDeCusto>?> call(
       FilterTransacoesCentroDeCusto filtros) async {
     try {

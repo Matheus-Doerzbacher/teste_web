@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teste_web/src/modules/despesas/domain/entities/transacoes_centro_de_custo.dart';
+import 'package:teste_web/src/modules/despesas/_models/transacoes_centro_de_custo.dart';
 
 class DataTableTransacoes extends StatelessWidget {
   final List<TransacoesCentroDeCusto> transacoes;

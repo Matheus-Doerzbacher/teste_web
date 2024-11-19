@@ -6,6 +6,7 @@ class DateRageWidget extends StatefulWidget {
   final DateTimeRange? dataRecebimento;
   final Function(DateTimeRange?) onVencimentoChanged;
   final Function(DateTimeRange?) onRecebimentoChanged;
+  final Function() onSave;
 
   const DateRageWidget({
     super.key,
@@ -13,6 +14,7 @@ class DateRageWidget extends StatefulWidget {
     this.dataRecebimento,
     required this.onVencimentoChanged,
     required this.onRecebimentoChanged,
+    required this.onSave,
   });
 
   @override
@@ -49,6 +51,7 @@ class _DateRageWidgetState extends State<DateRageWidget> {
           widget.onRecebimentoChanged(picked);
         }
       });
+      widget.onSave();
     }
   }
 
